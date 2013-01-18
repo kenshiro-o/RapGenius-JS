@@ -1,6 +1,6 @@
 # RapGenius-JS
 
-  rapgenius-js is a simple client that enables you to query RapGenius(wwww.rapgenius.com) and retrieve
+  rapgenius-js is a simple client that enables you to query RapGenius (www.rapgenius.com) and retrieve
 information about rap artists and songs.
 
 ## Rationale
@@ -45,6 +45,28 @@ geniusClient.searchSong("Liquid Swords", function(err, songs){
   }
 });
 ```
+
+## Model objects
+
+RapSong:
+
+```js
+var rapSong = new RapSong("Liquid Swords", "GZA", "http://rapgenius.com/Gza-liquid-swords-lyrics");
+console.log("song-name=%s, song-artist=%s, song-link", rapSong.name, rapSong.artists, rapSong.link);
+```
+
+RapArtist:
+
+```js
+var rapArtist = new RapArtist("GZA", "http://rapgenius.com/artists/Gza");
+var rapSong = new RapSong("Liquid Swords", "GZA", "http://rapgenius.com/Gza-liquid-swords-lyrics");
+rapArtist.addPopularSong(rapSong);
+rapArtist.addSong(rapSong);
+console.log("artist-name=%s, artist-link=%s, popular-songs-nb=%d, songs-nb=%d",
+             rapArtist.name, rapArtist.link, rapArtist.popularSongs.length, rapArtist.songs.length);
+```
+
+
 
 ## Additional features
 
