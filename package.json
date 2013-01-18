@@ -1,0 +1,17 @@
+{
+  "name": "rapgenius-js",
+  "description": "A client that queries the RapGenius (www.rapgenius.com) website",
+  "version": "0.0.1",
+  "keywords": ["rap", "rapgenius", "client"],
+  "author": "kenshiro-o",
+  "main": "geniusClient",
+  "dependencies": {
+    "superagent": "0.12.x",
+    "cheerio": "0.10.x"
+  },
+  "devDependencies": {
+    "vows": "*",
+    "mocha": "*"
+  }
+
+}
