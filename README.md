@@ -1,4 +1,4 @@
-# RapGenius-JS [[!Build Status]https://travis-ci.org/kenshiro-o/RapGenius-JS.png?branch=master] (https://travis-ci.org/kenshiro-o/RapGenius-JS.png?branch=master)
+# RapGenius-JS [![Build Status](https://travis-ci.org/kenshiro-o/RapGenius-JS.png?branch=master)](https://travis-ci.org/kenshiro-o/RapGenius-JS)
 
   rapgenius-js is a simple client that enables you to query RapGenius(wwww.rapgenius.com) and retrieve
 information about rap artists and songs.
