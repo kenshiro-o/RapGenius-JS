@@ -1,7 +1,7 @@
 var StringUtils = require("./../src/util/StringUtils"),
-    RapLyrics = require("./../src/model/RapLyrics"),
-    vows = require("vows"),
-    assert = require("assert");
+  RapLyrics = require("./../src/model/RapLyrics"),
+  vows = require("vows"),
+  assert = require("assert");
 
 vows.describe("Unit tests").addBatch({
   "When trimming a non string": {

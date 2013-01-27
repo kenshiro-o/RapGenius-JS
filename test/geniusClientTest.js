@@ -1,7 +1,7 @@
 var vows = require("vows"),
   geniusClient = require("./../src/genuisClient"),
   assert = require("assert");
-  util = require("util"),
+util = require("util"),
   RapSong = require("./../src/model/RapSong"),
   RapArtist = require("./../src/model/RapArtist"),
   RapLyrics = require("./../src/model/RapLyrics");
