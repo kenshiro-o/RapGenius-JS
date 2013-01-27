@@ -14,7 +14,7 @@
     "mocha": "*"
   },
   "scripts" : {
-    "test" : "vows test/*"
+    "test" :  "make test"
   }
 
 }
