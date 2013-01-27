@@ -1,3 +1,5 @@
-
 test:
-	@./node_modules/vows/bin/vows test/*
+	node test/unitTests.js
+	node test/geniusClientTest.js
+
+.PHONY: test
