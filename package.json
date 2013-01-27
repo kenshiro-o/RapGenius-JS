@@ -12,6 +12,9 @@
   "devDependencies": {
     "vows": "*",
     "mocha": "*"
+  },
+  "scripts" : {
+    "test" : "vows test/*"
   }
 
 }
