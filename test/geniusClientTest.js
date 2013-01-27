@@ -1,9 +1,10 @@
 var vows = require("vows"),
   geniusClient = require("./../src/genuisClient"),
   assert = require("assert");
-util = require("util"),
+  util = require("util"),
   RapSong = require("./../src/model/RapSong"),
-  RapArtist = require("./../src/model/RapArtist");
+  RapArtist = require("./../src/model/RapArtist"),
+  RapLyrics = require("./../src/model/RapLyrics");
 
 
 vows.describe("Search checks").addBatch({
@@ -62,6 +63,33 @@ vows.describe("Search checks").addBatch({
 
     "An error object is returned": function (err, response) {
       assert.ok(err);
+    }
+  },
+
+  "When searching for the lyrics of given song":{
+    topic: function(){
+      geniusClient.searchSongLyrics("/Raekwon-knowledge-god-lyrics", this.callback);
+    },
+
+    "The parsed lyrics are returned in an object": function(err, response){
+      assert.ok(!err);
+      assert.ok(!(response instanceof Error));
+      assert.ok(response instanceof RapLyrics);
+      assert.ok(response.sections.length > 0);
+      assert.deepEqual(response.sections[0].name, "[Intro]");
+    }
+  },
+
+  "When searching for the lyrics of a song that does not exist":{
+    topic: function(){
+      geniusClient.searchSongLyrics("/DOES-NOT-EXIST-LYRICS", this.callback);
+    },
+
+    "An error is returned": function(err, response){
+      assert.ok(err);
+      assert.ok(!(err instanceof RapLyrics));
+      assert.ok(err instanceof Error);
+
     }
   }
 }).run();

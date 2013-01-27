@@ -1,8 +1,8 @@
 {
   "name": "rapgenius-js",
   "description": "A client that queries the RapGenius (www.rapgenius.com) website",
-  "version": "0.0.1",
-  "keywords": ["rap", "rapgenius", "client"],
+  "version": "0.0.2",
+  "keywords": ["rap", "rapgenius", "client", "lyrics", "music"],
   "author": "kenshiro-o",
   "main": "geniusClient",
   "dependencies": {

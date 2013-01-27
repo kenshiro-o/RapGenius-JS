@@ -11,7 +11,8 @@ function RapSong(name, artists, link) {
 RapSong.prototype = {
   name: "",
   artists: "",
-  link: ""
+  link: "",
+  lyrics: null
 }
 
 module.exports = RapSong;

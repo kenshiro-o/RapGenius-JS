@@ -1,6 +1,7 @@
 var StringUtils = require("./../src/util/StringUtils"),
-  vows = require("vows"),
-  assert = require("assert");
+    RapLyrics = require("./../src/model/RapLyrics"),
+    vows = require("vows"),
+    assert = require("assert");
 
 vows.describe("Unit tests").addBatch({
   "When trimming a non string": {
@@ -83,6 +84,53 @@ vows.describe("Unit tests").addBatch({
         assert.deepEqual(topic, "ABC");
       }
     }
+  }).addBatch({
+    "When requesting full lyrics without section name":{
+      topic: function(){
+        var lyrics1 = "Man these tests put me on mad edge\n" +
+                      "Wanna skip'em but gotta keep my pledge\n";
+        var lyrics2 = "When I put this hat on to work some node\n" +
+                      "I type keyboard bangin' to create some code\n";
+        var sections = [];
+        sections.push({name: "[Intro-1]\n", lyrics: lyrics1});
+        sections.push({name: "[Intro-2]\n", lyrics: lyrics2});
 
+        return new RapLyrics(sections);
+      },
+
+      "The full lyrics with no sections are returned" : function(topic){
+        assert.ok(topic instanceof RapLyrics);
+        var lyrics = "Man these tests put me on mad edge\n" +
+                     "Wanna skip'em but gotta keep my pledge\n" +
+                     "When I put this hat on to work some node\n" +
+                     "I type keyboard bangin' to create some code\n";
+        assert.deepEqual(topic.getFullLyrics(false), lyrics);
+      }
+    },
+
+    "When requesting full lyrics with section name":{
+      topic: function(){
+        var lyrics1 = "Man these tests put me on mad edge\n" +
+                      "Wanna skip'em but gotta keep my pledge\n";
+        var lyrics2 = "When I put this hat on to work some node\n" +
+                      "I type keyboard bangin' to create some code\n";
+        var sections = [];
+        sections.push({name: "[Intro-1]\n", lyrics: lyrics1});
+        sections.push({name: "[Intro-2]\n", lyrics: lyrics2});
+
+        return new RapLyrics(sections);
+      },
+
+      "The full lyrics with no sections are returned" : function(topic){
+        assert.ok(topic instanceof RapLyrics);
+        var lyrics = "[Intro-1]\n" +
+                     "Man these tests put me on mad edge\n" +
+                     "Wanna skip'em but gotta keep my pledge\n" +
+                     "[Intro-2]\n" +
+                     "When I put this hat on to work some node\n" +
+                     "I type keyboard bangin' to create some code\n";
+        assert.deepEqual(topic.getFullLyrics(true), lyrics);
+      }
+    }
 
   }).run();

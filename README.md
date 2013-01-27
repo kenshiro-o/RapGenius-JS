@@ -46,12 +46,41 @@ geniusClient.searchSong("Liquid Swords", function(err, songs){
 });
 ```
 
+3. Search for the lyrics of a song:
+
+```js
+var geniusClient = require("geniusClient");
+
+var lyricsSearchCb = function(err, lyrics){
+    if(err){
+      console.log("Error: " + err);
+    }else{
+      //Printing lyrics with section names
+      console.log("**** LYRICS *****\n%s", lyrics.getFullLyrics(true));
+    }
+};
+
+
+var searchCallback = function(err, songs){
+  if(err){
+    console.log("Error: " + err);
+  }else{
+    if(songs.length > 0){
+      //We have some songs
+      geniusClient.searchSongLyrics(songs[0].link, lyricsSearchCb);
+    }
+  }
+};
+
+geniusClient.searchSong("Liquid Swords", searchCallback);
+```
+
+
 ## Additional features
 
   I will work on the following features when I get the time:
 - Refactor code base
-- Searching lyrics of a given song
-- Obtaining explanation of song lyrics
+- Obtain explanation of song lyrics
 
 ## Licence
 
