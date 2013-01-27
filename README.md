@@ -1,6 +1,6 @@
 # RapGenius-JS [![Build Status](https://travis-ci.org/kenshiro-o/RapGenius-JS.png?branch=master)](https://travis-ci.org/kenshiro-o/RapGenius-JS)
 
-  rapgenius-js is a simple client that enables you to query RapGenius(wwww.rapgenius.com) and retrieve
+  rapgenius-js is a simple client that enables you to query RapGenius(www.rapgenius.com) and retrieve
 information about rap artists and songs.
 
 ## Rationale
@@ -15,7 +15,7 @@ information about rap artists and songs.
 
   The API is very simple to use and currently enables you to perform the following:
 
-1. Search for an artist:
+### Search for an artist:
 
 ```js
 var geniusClient = require("geniusClient");
@@ -31,7 +31,7 @@ geniusClient.searchArtist("GZA", function(err, artist){
 });
 ```
 
-2. Search for a song:
+### Search for a song:
 
 ```js
 var geniusClient = require("geniusClient");
@@ -46,7 +46,7 @@ geniusClient.searchSong("Liquid Swords", function(err, songs){
 });
 ```
 
-3. Search for the lyrics of a song:
+### Search for the lyrics of a song:
 
 ```js
 var geniusClient = require("geniusClient");
