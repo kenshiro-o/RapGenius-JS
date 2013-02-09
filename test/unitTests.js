@@ -91,15 +91,26 @@ vows.describe("Unit tests").addBatch({
                       "Wanna skip'em but gotta keep my pledge\n";
         var lyrics2 = "When I put this hat on to work some node\n" +
                       "I type keyboard bangin' to create some code\n";
-        var sections = [];
-        sections.push({name: "[Intro-1]\n", lyrics: lyrics1});
-        sections.push({name: "[Intro-2]\n", lyrics: lyrics2});
 
-        return new RapLyrics(sections);
+        var verse1 = new RapLyrics.Verses(0);
+        var verse2 = new RapLyrics.Verses(0);
+        verse1.addContent(lyrics1);
+        verse2.addContent(lyrics2);
+
+        var section1 = new RapLyrics.Section("[Intro-1]\n");
+        var section2 = new RapLyrics.Section("[Intro-2]\n");
+        section1.addVerses(verse1);
+        section2.addVerses(verse2);
+
+        var rapLyrics = new RapLyrics.RapLyrics(0);
+        rapLyrics.addSection(section1);
+        rapLyrics.addSection(section2);
+
+        return rapLyrics;
       },
 
       "The full lyrics with no sections are returned" : function(topic){
-        assert.ok(topic instanceof RapLyrics);
+        assert.ok(topic instanceof RapLyrics.RapLyrics);
         var lyrics = "Man these tests put me on mad edge\n" +
                      "Wanna skip'em but gotta keep my pledge\n" +
                      "When I put this hat on to work some node\n" +
@@ -108,21 +119,32 @@ vows.describe("Unit tests").addBatch({
       }
     },
 
-    "When requesting full lyrics with section name":{
+    "When requesting full lyrics with section names":{
       topic: function(){
         var lyrics1 = "Man these tests put me on mad edge\n" +
                       "Wanna skip'em but gotta keep my pledge\n";
         var lyrics2 = "When I put this hat on to work some node\n" +
                       "I type keyboard bangin' to create some code\n";
-        var sections = [];
-        sections.push({name: "[Intro-1]\n", lyrics: lyrics1});
-        sections.push({name: "[Intro-2]\n", lyrics: lyrics2});
 
-        return new RapLyrics(sections);
+        var verse1 = new RapLyrics.Verses(0);
+        var verse2 = new RapLyrics.Verses(0);
+        verse1.addContent(lyrics1);
+        verse2.addContent(lyrics2);
+
+        var section1 = new RapLyrics.Section("[Intro-1]\n");
+        var section2 = new RapLyrics.Section("[Intro-2]\n");
+        section1.addVerses(verse1);
+        section2.addVerses(verse2);
+
+        var rapLyrics = new RapLyrics.RapLyrics(0);
+        rapLyrics.addSection(section1);
+        rapLyrics.addSection(section2);
+
+        return rapLyrics;
       },
 
       "The full lyrics with no sections are returned" : function(topic){
-        assert.ok(topic instanceof RapLyrics);
+        assert.ok(topic instanceof RapLyrics.RapLyrics);
         var lyrics = "[Intro-1]\n" +
                      "Man these tests put me on mad edge\n" +
                      "Wanna skip'em but gotta keep my pledge\n" +
@@ -130,6 +152,41 @@ vows.describe("Unit tests").addBatch({
                      "When I put this hat on to work some node\n" +
                      "I type keyboard bangin' to create some code\n";
         assert.deepEqual(topic.getFullLyrics(true), lyrics);
+      }
+    },
+
+    "When adding explanation to lyrics": {
+      topic: function(){
+        var lyrics1 = "Man these tests put me on mad edge\n" +
+                      "Wanna skip'em but gotta keep my pledge\n";
+        var lyrics2 = "When I put this hat on to work some node\n" +
+                      "I type keyboard bangin' to create some code\n";
+
+        var verse1 = new RapLyrics.Verses(1);
+        var verse2 = new RapLyrics.Verses(2);
+        verse1.addContent(lyrics1);
+        verse2.addContent(lyrics2);
+
+        var section1 = new RapLyrics.Section("[Intro-1]\n");
+        var section2 = new RapLyrics.Section("[Intro-2]\n");
+        section1.addVerses(verse1);
+        section2.addVerses(verse2);
+
+        var rapLyrics = new RapLyrics.RapLyrics(0);
+        rapLyrics.addSection(section1);
+        rapLyrics.addSection(section2);
+
+        var explanations = {"1": "I am talking about these unit tests driving me crazy",
+                            "2": "But when I wear my productivity hat, I ship some code quick"};
+        rapLyrics.addExplanations(explanations);
+
+        return rapLyrics;
+      },
+
+      "The verses contain the explanation": function(lyrics){
+        assert.ok(lyrics instanceof RapLyrics.RapLyrics);
+        assert.deepEqual(lyrics.sections[0].verses[0].explanation, "I am talking about these unit tests driving me crazy");
+        assert.deepEqual(lyrics.sections[1].verses[0].explanation, "But when I wear my productivity hat, I ship some code quick");
       }
     }
 

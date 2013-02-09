@@ -6,6 +6,7 @@ var superAgent = require("superagent"),
 var RAP_GENIUS_URL = "http://rapgenius.com";
 var RAP_GENIUS_URL_SEARCH_URL = RAP_GENIUS_URL + "/search";
 var RAP_GENIUS_ARTIST_URL = "http://rapgenius.com/artists/";
+var RAP_GENIUS_SONG_EXPLANATION_URL = RAP_GENIUS_URL + "/annotations/for_song_page";
 
 
 function searchSong(query, callback) {
@@ -68,6 +69,50 @@ function searchSongLyrics(link, callback){
     });
 }
 
+function searchLyricsExplanation(songId, callback){
+  //Check whether the URL is fully defined or relative
+  superAgent.get(RAP_GENIUS_SONG_EXPLANATION_URL)
+    .set("Accept", "text/html")
+    .query({song_id: songId})
+    .end(function(res){
+      if(res.ok){
+        var explanations = RapLyricsParser.parseLyricsExplanationJSON(JSON.parse(res.text));
+        if(explanations instanceof Error){
+          return callback(explanations);
+        }else{
+          return callback(null, explanations);
+        }
+      }else{
+        console.log("An error occurred while trying to get lyrics explanation[song-id=%s, status=%s]", songId, res.status);
+        return callback(new Error("Unable to access the page for lyrics [url=" + songId + "]"));
+      }
+    });
+}
+
+function searchLyricsAndExplanations(link, callback){
+  var lyrics = null;
+  var lyricsCallback = function(err, rapLyrics){
+    if(err){
+      return callback(err);
+    }else{
+      lyrics = rapLyrics;
+      searchLyricsExplanation(lyrics.songId, explanationsCallback);
+    }
+  };
+
+  var explanationsCallback = function(err, explanations){
+    if(err){
+      return callback(err);
+    }else{
+      return callback(null, {lyrics: lyrics, explanations: explanations});
+    }
+  };
+
+  searchSongLyrics(link, lyricsCallback);
+}
+
 module.exports.searchSong = searchSong;
 module.exports.searchArtist = searchArtist;
 module.exports.searchSongLyrics = searchSongLyrics;
+module.exports.searchLyricsExplanation = searchLyricsExplanation;
+module.exports.searchLyricsAndExplanations = searchLyricsAndExplanations;

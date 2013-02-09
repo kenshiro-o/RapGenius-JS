@@ -74,9 +74,34 @@ vows.describe("Search checks").addBatch({
     "The parsed lyrics are returned in an object": function(err, response){
       assert.ok(!err);
       assert.ok(!(response instanceof Error));
-      assert.ok(response instanceof RapLyrics);
+      assert.ok(response instanceof RapLyrics.RapLyrics);
+      assert.deepEqual(response.songId, 3681);
       assert.ok(response.sections.length > 0);
       assert.deepEqual(response.sections[0].name, "[Intro]");
+    }
+  },
+
+  "when searching for the meaning of a song's lyrics":{
+    topic: function(){
+      geniusClient.searchLyricsExplanation(3681, this.callback);
+    },
+
+    "An explanation object is returned": function(err, response){
+      assert.ok(!err);
+      assert.ok(response[107258]) ;
+      assert.deepEqual(response[310425], "Really though, why would anyone try to fuck with them?");
+    }
+  },
+
+  "when searching for a song's lyrics and their meaning":{
+    topic: function(){
+      geniusClient.searchLyricsAndExplanations("/Raekwon-knowledge-god-lyrics", this.callback);
+    },
+
+    "A returned tuple of lyrics and explanations is returned": function(err, response){
+      assert.ok(!err);
+      assert.ok(response.lyrics instanceof RapLyrics.RapLyrics);
+      assert.deepEqual(response.explanations[310425], "Really though, why would anyone try to fuck with them?");
     }
   },
 
@@ -87,9 +112,8 @@ vows.describe("Search checks").addBatch({
 
     "An error is returned": function(err, response){
       assert.ok(err);
-      assert.ok(!(err instanceof RapLyrics));
+      assert.ok(!(err instanceof RapLyrics.RapLyrics));
       assert.ok(err instanceof Error);
-
     }
   }
 }).run();

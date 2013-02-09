@@ -46,20 +46,26 @@ geniusClient.searchSong("Liquid Swords", function(err, songs){
 });
 ```
 
-### Search for the lyrics of a song:
+### Search for the lyrics of a song along with their meaning:
 
 ```js
 var geniusClient = require("geniusClient");
 
-var lyricsSearchCb = function(err, lyrics){
+var lyricsSearchCb = function(err, lyricsAndExplanations){
     if(err){
       console.log("Error: " + err);
     }else{
       //Printing lyrics with section names
+      var lyrics = lyricsAndExplanations.lyrics;
+      var explanations = lyricsAndExplanations.explanations;
       console.log("**** LYRICS *****\n%s", lyrics.getFullLyrics(true));
+
+      //Now we can embed the explanations within the verses
+      lyrics.addExplanations(explanations);
+      var firstVerses = lyrics.sections[0].verses[0];
+      console.log("\nVerses:\n %s \n\n *** This means ***\n%s", firstVerses.content, firstVerses.explanation);
     }
 };
-
 
 var searchCallback = function(err, songs){
   if(err){
@@ -67,7 +73,7 @@ var searchCallback = function(err, songs){
   }else{
     if(songs.length > 0){
       //We have some songs
-      geniusClient.searchSongLyrics(songs[0].link, lyricsSearchCb);
+      geniusClient.searchLyricsAndExplanations(songs[0].link, lyricsSearchCb);
     }
   }
 };

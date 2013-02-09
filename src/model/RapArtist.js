@@ -1,13 +1,15 @@
 function RapArtist(name, link) {
   this.name = name;
   this.link = link;
+  this.popularSongs = [];
+  this.songs = [];
 }
 
 RapArtist.prototype = {
   name: "",
   link: "",
-  popularSongs: [],
-  songs: []
+  popularSongs: null,
+  songs: null
 };
 
 RapArtist.prototype.addPopularSong = function (rapSong) {
