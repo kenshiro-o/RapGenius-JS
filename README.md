@@ -86,7 +86,7 @@ geniusClient.searchSong("Liquid Swords", searchCallback);
 
   I will work on the following features when I get the time:
 - Refactor code base
-- Obtain explanation of song lyrics
+- Improve performance
 
 ## Licence
 
