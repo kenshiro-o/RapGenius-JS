@@ -15,6 +15,36 @@ information about rap artists and songs.
 
   The API is very simple to use and currently enables you to perform the following:
 
+### Model objects
+
+#### RapArtist
+    RapArtist
+      - name: String
+      - link: String
+      - popularSongs: Array (of String)
+      - songs: Array (of String)
+
+#### RapSong
+    RapSong
+      - name: String
+      - artists: String
+      - link: String
+
+#### RapLyrics
+    Verses
+      - id: int
+      - content: String
+      - explanation: String
+
+    Section
+      - name: String
+      - content: String
+      - verses: Array (of Verses)
+
+    RapLyrics
+      - songId: int
+      - sections: Array (of Section)
+
 ### Search for an artist:
 
 ```js
