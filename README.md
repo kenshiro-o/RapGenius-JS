@@ -18,9 +18,9 @@ information about rap artists and songs.
 ### Search for an artist:
 
 ```js
-var geniusClient = require("geniusClient");
+var rapgeniusClient = require("rapgenius-js");
 
-geniusClient.searchArtist("GZA", function(err, artist){
+rapgeniusClient.searchArtist("GZA", function(err, artist){
   if(err){
     console.log("Error: " + err);
   }else{
@@ -34,9 +34,9 @@ geniusClient.searchArtist("GZA", function(err, artist){
 ### Search for a song:
 
 ```js
-var geniusClient = require("geniusClient");
+var rapgeniusClient = require("rapgenius-js");
 
-geniusClient.searchSong("Liquid Swords", function(err, songs){
+rapgeniusClient.searchSong("Liquid Swords", function(err, songs){
   if(err){
     console.log("Error: " + err);
   }else{
@@ -49,7 +49,7 @@ geniusClient.searchSong("Liquid Swords", function(err, songs){
 ### Search for the lyrics of a song along with their meaning:
 
 ```js
-var geniusClient = require("geniusClient");
+var rapgeniusClient = require("rapgenius-js");
 
 var lyricsSearchCb = function(err, lyricsAndExplanations){
     if(err){
@@ -73,12 +73,12 @@ var searchCallback = function(err, songs){
   }else{
     if(songs.length > 0){
       //We have some songs
-      geniusClient.searchLyricsAndExplanations(songs[0].link, lyricsSearchCb);
+      rapgeniusClient.searchLyricsAndExplanations(songs[0].link, lyricsSearchCb);
     }
   }
 };
 
-geniusClient.searchSong("Liquid Swords", searchCallback);
+rapgeniusClient.searchSong("Liquid Swords", searchCallback);
 ```
 
 
