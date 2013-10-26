@@ -33,15 +33,18 @@ function parseLyricsHTML(html){
                     rapLyrics.addSection(currentSection);
                 }else{
                     //Not a section name, therefore this must be text
-                    parsed += parsed.length > 0 ? " " : "";
+                    //However we only want to add non empty strings
+                    var parsedNotEmpty = parsed.length > 0;
 
-                    if(!currentVerses){
+                    if(!currentVerses && parsedNotEmpty){
                         //Add verses to section
                         currentVerses = new RapLyrics.Verses(-1);
                         currentSection.addVerses(currentVerses);
                     }
                     //Now add content to verses object
-                    currentVerses.addContent(parsed);
+                    if(parsedNotEmpty){
+                        currentVerses.addContent(parsed);
+                    }
                 }
             }else if(paragraphContent.type === "tag" && paragraphContent.name === "br"){
                 if(currentVerses){

@@ -71,7 +71,7 @@ rapgeniusClient.searchSong("Liquid Swords", function(err, songs){
     console.log("Error: " + err);
   }else{
     console.log("Songs that matched the search query were found" +
-                "[songs-found=%d, first-song-name=%s"", songs.length, songs[0].name);
+                "[songs-found=%d, first-song-name=%s", songs.length, songs[0].name);
   }
 });
 ```

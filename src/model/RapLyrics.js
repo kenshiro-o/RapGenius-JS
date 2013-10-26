@@ -66,7 +66,7 @@ RapLyrics.prototype.addSection = function(section){
 RapLyrics.prototype.getFullLyrics = function (withSectionNames){
   var fullLyrics = "";
   this.sections.forEach(function(section){
-    fullLyrics += ((withSectionNames) ? section.name : "" );
+    fullLyrics += ((withSectionNames) ? section.name + "\n" : "" );
     section.verses.forEach(function(verses){
       fullLyrics += verses.content;
     });
