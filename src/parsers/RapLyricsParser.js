@@ -3,8 +3,7 @@ var cheerio = require("cheerio"),
   StringUtils = require("../util/StringUtils");
 
 function parseLyricsHTML(html){
-  //TODO Perform some further validation
-  try{
+    try{
     var $ = cheerio.load(html);
     var lyricsContainer = $(".lyrics_container", "#main");
     if(lyricsContainer.length <= 0){
@@ -14,54 +13,59 @@ function parseLyricsHTML(html){
 
     //We definitely have some lyrics down there...
     lyricsContainer.each(function(index, container){
+      //The lyrics class holds the paragraphs that contain the lyrics
       var lyricsElems = $(container).find(".lyrics");
-      var sections = [];
-//      var currentSection = {name: "[Empty Section]", lyrics: ""};
+      var songId = parseInt($(lyricsElems.first()).attr("data-id"));
+      rapLyrics = new RapLyrics.RapLyrics(songId, 10);
+
       var currentSection = new RapLyrics.Section("[Empty Section]");
       var currentVerses = null;
 
-      //Always add the empty section
-      sections.push(currentSection);
+    //Parsing function  - what really does the job
+    var parserFunc = function(index ,paragraphElem){
+        var paragraphParser = function(paragraphContent){
+            if(paragraphContent.type === "text"){
+                var parsed = StringUtils.removeWhiteSpacesAndNewLines(paragraphContent.data);
 
-      lyricsElems.each( function(i, lyricElem){
-        rapLyrics = new RapLyrics.RapLyrics( parseInt($(lyricElem).attr("data-id"), 10));
-        var fn = function(elem){
-          if(elem.type === "text"){
-            var parsed = StringUtils.removeWhiteSpacesAndNewLines(elem.data);
+                //check if parsed content is a section
+                if(/^\[.*\]$/.test(parsed)){
+                    currentSection = new RapLyrics.Section(parsed);
+                    rapLyrics.addSection(currentSection);
+                }else{
+                    //Not a section name, therefore this must be text
+                    parsed += parsed.length > 0 ? " " : "";
 
-
-            //Check if parsed content is a section
-            if(/^\[.*\]$/.test(parsed)){
-              //Add previous section if not
-              currentSection = new RapLyrics.Section(parsed);
-              rapLyrics.addSection(currentSection);
-            }else{
-              parsed += parsed.length > 0 ? " " : "";
-
-              if(!currentVerses){
-                currentVerses = new RapLyrics.Verses(-1);
+                    if(!currentVerses){
+                        //Add verses to section
+                        currentVerses = new RapLyrics.Verses(-1);
+                        currentSection.addVerses(currentVerses);
+                    }
+                    //Now add content to verses object
+                    currentVerses.addContent(parsed);
+                }
+            }else if(paragraphContent.type === "tag" && paragraphContent.name === "br"){
+                if(currentVerses){
+                    currentVerses.addContent("\n");
+                }
+            }else if(paragraphContent.type === "tag" && paragraphContent.name === "a"){
+                //We have stumbled upon an annotate lyrics block
+                var lyricsId = parseInt($(paragraphContent).attr("data-id"), 10);
+                currentVerses = new RapLyrics.Verses(lyricsId);
                 currentSection.addVerses(currentVerses);
-              }
 
-              currentVerses.addContent(parsed);
-            }
-          }else if(elem.type === "tag" && elem.name === "br"){
-            if(!currentVerses){
-              currentVerses = new RapLyrics.Verses(-1);
-              currentSection.addVerses(currentVerses);
+                //We now recursively process the text that is inside the <a> tag as it contains the lyrics
+                paragraphContent.children.forEach(paragraphParser);
             }
 
-            currentVerses.addContent("\n");
-          }else if(elem.type === "tag" && elem.name === "a"){
-            //This is a new block of verses with explanation
-            currentVerses = new RapLyrics.Verses(parseInt($(elem).attr("data-id"), 10));
-            currentSection.addVerses(currentVerses);
-
-            elem.children.forEach(fn);
-          }
         };
-        lyricElem.children.forEach(fn);
-      });
+
+        paragraphElem.children.forEach(paragraphParser);
+
+    };
+
+    //All lyrics are now contained in paragraphs
+    lyricsElems.find("p").each(parserFunc);
+
     });
     return rapLyrics;
   }catch(e){
