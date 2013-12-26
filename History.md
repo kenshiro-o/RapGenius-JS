@@ -1,3 +1,11 @@
+0.0.7 / 2013-12-26
+====================
+* Adding extra fields to RapLyrics model object:
+-  songTitle
+-  mainArtist
+-  featuringArtists
+-  producingArtists
+
 0.0.5 / 2013-01-27
 ====================
 * Refactored RapLyrics model object

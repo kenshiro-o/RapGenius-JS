@@ -76,6 +76,10 @@ vows.describe("Search checks").addBatch({
       assert.ok(!(response instanceof Error));
       assert.ok(response instanceof RapLyrics.RapLyrics);
       assert.deepEqual(response.songId, 3681);
+      assert.deepEqual(response.songTitle, "Knowledge God");
+      assert.deepEqual(response.mainArtist, "Raekwon");
+      assert.deepEqual(response.producingArtists, ["RZA"]);
+      assert.deepEqual(response.featuringArtists, []);
       assert.ok(response.sections.length > 0);
       assert.deepEqual(response.sections[0].name, "[Intro]");
     }

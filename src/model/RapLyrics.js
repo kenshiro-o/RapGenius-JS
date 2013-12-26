@@ -56,6 +56,10 @@ function RapLyrics(id){
 
 RapLyrics.prototype = {
   songId: -1,
+  songTitle: "",
+  mainArtist: "",
+  featuringArtists: [],
+  producingArtists: [],
   sections: null
 };
 

@@ -43,6 +43,10 @@ information about rap artists and songs.
 
     RapLyrics
       - songId: int
+      - songTitle: String
+      - mainArtist: String
+      - featuringArtists: Array (of String)
+      - producingArtists: Array (of String)
       - sections: Array (of Section)
 
 ### Search for an artist:
@@ -88,6 +92,8 @@ var lyricsSearchCb = function(err, lyricsAndExplanations){
       //Printing lyrics with section names
       var lyrics = lyricsAndExplanations.lyrics;
       var explanations = lyricsAndExplanations.explanations;
+      console.log("Found lyrics for song [title=%s, main-artist=%s, featuring-artists=%s, producing-artists=%s]",
+        lyrics.songTitle, lyrics.mainArtist, lyrics.featuringArtists, lyrics.producingArtists);
       console.log("**** LYRICS *****\n%s", lyrics.getFullLyrics(true));
 
       //Now we can embed the explanations within the verses
