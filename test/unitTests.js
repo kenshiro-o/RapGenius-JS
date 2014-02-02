@@ -1,5 +1,5 @@
 var StringUtils = require("./../src/util/StringUtils"),
-  RapLyrics = require("./../src/model/Lyrics"),
+  Lyrics = require("./../src/model/Lyrics"),
   vows = require("vows"),
   assert = require("assert");
 
@@ -131,8 +131,8 @@ vows.describe("Unit tests").addBatch({
         verse1.addContent(lyrics1);
         verse2.addContent(lyrics2);
 
-        var section1 = new Lyrics.Section("[Intro-1]\n");
-        var section2 = new Lyrics.Section("[Intro-2]\n");
+        var section1 = new Lyrics.Section("[Intro-1]");
+        var section2 = new Lyrics.Section("[Intro-2]");
         section1.addVerses(verse1);
         section2.addVerses(verse2);
 

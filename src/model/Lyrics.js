@@ -46,7 +46,7 @@ module.exports.Section = Section;
 
 
 /**
- * RapLyrics represents a collection of sections,
+ * Lyrics represents a collection of sections,
  * which in turn contain a collection of verses
  */
 function Lyrics(id){
