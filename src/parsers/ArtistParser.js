@@ -1,12 +1,13 @@
 var cheerio = require("cheerio"),
   CONSTANTS = require("../constants/Constants"),
-  RapSong = require("../model/RapSong"),
-  RapArtist = require("../model/RapArtist"),
+  RapSong = require("../model/Song"),
+  RapArtist = require("../model/Artist"),
   StringUtils = require("../util/StringUtils");
 
 
-function parseArtistHTML(html) {
+function parseArtistHTML(html, type) {
   try {
+    var urls = CONSTANTS.Type2URLs[type];
     var $ = cheerio.load(html);
 
     var artistElem = $(".canonical_name", "#main");
@@ -26,16 +27,16 @@ function parseArtistHTML(html) {
       }
     });
 
-    var artistLink = CONSTANTS.RAP_GENIUS_ARTIST_URL + artistName;
-    var rapArtist = new RapArtist(artistName, artistLink);
+    var artistLink = urls.artist_url + artistName.replace(" ", "-");
+    var rapArtist = new Artist(artistName, artistLink);
 
     var songs = $(".song_list", "#main");
     songs.each(function (index, song) {
       var songLinkElem = $(song).find(".song_link");
       songLinkElem.each(function (i, s) {
-        var songLink = CONSTANTS.RAP_GENIUS_URL + $(s).attr("href");
+        var songLink = urls.base_url + $(s).attr("href");
         var songName = StringUtils.removeWhiteSpacesAndNewLines($(s).children(".title_with_artists").text());
-        var rapSong = new RapSong(songName, artistLink, songLink);
+        var rapSong = new Song(songName, artistLink, songLink);
 
         if (index === 0) {
           //This element represents the favourite songs of the artist

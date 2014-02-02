@@ -1,7 +1,7 @@
 # RapGenius-JS [![Build Status](https://travis-ci.org/kenshiro-o/RapGenius-JS.png?branch=master)](https://travis-ci.org/kenshiro-o/RapGenius-JS)
 
   rapgenius-js is a simple client that enables you to query RapGenius(www.rapgenius.com) and retrieve
-information about rap artists and songs.
+information about rap and rock artists and songs.
 
 ## Rationale
 
@@ -17,20 +17,20 @@ information about rap artists and songs.
 
 ### Model objects
 
-#### RapArtist
-    RapArtist
+#### Artist
+    Artist
       - name: String
       - link: String
       - popularSongs: Array (of String)
       - songs: Array (of String)
 
-#### RapSong
-    RapSong
+#### Song
+    Song
       - name: String
       - artists: String
       - link: String
 
-#### RapLyrics
+#### Lyrics
     Verses
       - id: int
       - content: String
@@ -41,7 +41,7 @@ information about rap artists and songs.
       - content: String
       - verses: Array (of Verses)
 
-    RapLyrics
+    Lyrics
       - songId: int
       - songTitle: String
       - mainArtist: String
@@ -54,7 +54,18 @@ information about rap artists and songs.
 ```js
 var rapgeniusClient = require("rapgenius-js");
 
-rapgeniusClient.searchArtist("GZA", function(err, artist){
+rapgeniusClient.searchArtist("GZA", "rap", function(err, artist){
+  if(err){
+    console.log("Error: " + err);
+  }else{
+    console.log("Rap artist found [name=%s, link=%s, popular-songs=%d]",
+                artist.name, artist.link, artist.popularSongs.length);
+
+  }
+});
+
+//Example for a rock artist
+rapgeniusClient.searchArtist("Bruce Springsteen", "rock", function(err, artist){
   if(err){
     console.log("Error: " + err);
   }else{
@@ -70,7 +81,7 @@ rapgeniusClient.searchArtist("GZA", function(err, artist){
 ```js
 var rapgeniusClient = require("rapgenius-js");
 
-rapgeniusClient.searchSong("Liquid Swords", function(err, songs){
+rapgeniusClient.searchSong("Liquid Swords", "rap", function(err, songs){
   if(err){
     console.log("Error: " + err);
   }else{
@@ -109,12 +120,12 @@ var searchCallback = function(err, songs){
   }else{
     if(songs.length > 0){
       //We have some songs
-      rapgeniusClient.searchLyricsAndExplanations(songs[0].link, lyricsSearchCb);
+      rapgeniusClient.searchLyricsAndExplanations(songs[0].link, "rap", lyricsSearchCb);
     }
   }
 };
 
-rapgeniusClient.searchSong("Liquid Swords", searchCallback);
+rapgeniusClient.searchSong("Liquid Swords", "rap", searchCallback);
 ```
 
 

@@ -1,19 +1,21 @@
 var cheerio = require("cheerio"),
   CONSTANTS = require("../constants/Constants"),
-  RapSong = require("../model/RapSong"),
+  RapSong = require("../model/Song"),
   StringUtils = require("../util/StringUtils");
 
-function parseSongHTML(html) {
+
+function parseSongHTML(html, type) {
   //TODO Check we are dealing with proper HTML
   //or something that looks like HTML, otherwise throw an error
   try {
+    var urls = CONSTANTS.Type2URLs[type];
     var $ = cheerio.load(html);
     var songs = $(".song_link", "#main");
 
     var rapSongArray = new Array(songs.length);
 
     songs.each(function (index, song) {
-      var link = CONSTANTS.RAP_GENIUS_URL + $(this).attr("href");
+      var link = urls.base_url + $(this).attr("href");
       var elem = $(this).find(".title_with_artists");
 
       //Remove all unwanted characters
@@ -23,7 +25,7 @@ function parseSongHTML(html) {
       var artists = StringUtils.trim(songAndArtists.substring(0, indexOfHyphen));
       var songName = StringUtils.trim(songAndArtists.substring(indexOfHyphen + 1, songAndArtists.length));
 
-      rapSongArray[index] = new RapSong(songName, artists, link);
+      rapSongArray[index] = new Song(songName, artists, link);
     });
 
     return rapSongArray;

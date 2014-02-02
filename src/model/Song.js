@@ -1,18 +1,18 @@
 /**
- * Simple model class for a RapSong
+ * Simple model class for a song
  */
 
-function RapSong(name, artists, link) {
+function Song(name, artists, link) {
   this.name = name;
   this.artists = artists;
   this.link = link;
 }
 
-RapSong.prototype = {
+Song.prototype = {
   name: "",
   artists: "",
   link: "",
   lyrics: null
 }
 
-module.exports = RapSong;
+module.exports = Song;
