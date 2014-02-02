@@ -1,22 +1,32 @@
 var superAgent = require("superagent"),
-  RapSongParser = require("./parsers/RapSongsParser"),
-  RapArtistParser = require("./parsers/RapArtistParser"),
-  RapLyricsParser = require("./parsers/RapLyricsParser");
+  RapSongParser = require("./parsers/SongsParser"),
+  RapArtistParser = require("./parsers/ArtistParser"),
+  RapLyricsParser = require("./parsers/LyricsParser")
+  Constants = require("./constants/Constants");
 
 var RAP_GENIUS_URL = "http://rapgenius.com";
-var RAP_GENIUS_URL_SEARCH_URL = RAP_GENIUS_URL + "/search";
 var RAP_GENIUS_ARTIST_URL = "http://rapgenius.com/artists/";
 var RAP_GENIUS_SONG_EXPLANATION_URL = RAP_GENIUS_URL + "/annotations/for_song_page";
 
 
-function searchSong(query, callback) {
+function searchSong(query, type, callback) {
   //TODO perform input validation
-  superAgent.get(RAP_GENIUS_URL_SEARCH_URL)
+
+  type = type.toLowerCase();
+  var type2Urls = Constants.Type2URLs[ type];
+  if (!type2Urls){
+      process.nextTick(function(){
+         callback("Unrecognized type in song search [type=" + type + "]");
+      });
+      return;
+  }
+
+  superAgent.get(type2Urls.search_url)
     .query({q: query})
     .set("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8")
     .end(function (res) {
       if (res.ok) {
-        var result = RapSongParser.parseSongHTML(res.text);
+        var result = RapSongParser.parseSongHTML(res.text, type);
         if (result instanceof Error) {
           return callback(result);
         } else {
@@ -29,13 +39,22 @@ function searchSong(query, callback) {
     });
 }
 
-function searchArtist(artist, callback) {
+function searchArtist(artist, type, callback) {
   //TODO perform input validation
-  superAgent.get(RAP_GENIUS_ARTIST_URL + artist)
+    type = type.toLowerCase();
+    var type2Urls = Constants.Type2URLs[ type];
+    if (!type2Urls){
+        process.nextTick(function(){
+            callback("Unrecognized type in artist search [type=" + type + "]");
+        });
+        return;
+    }
+
+    superAgent.get(type2Urls.artist_url + artist)
     .set("Accept", "text/html")
     .end(function (res) {
       if (res.ok) {
-        var result = RapArtistParser.parseArtistHTML(res.text);
+        var result = RapArtistParser.parseArtistHTML(res.text, type);
         if (result instanceof Error) {
           return callback(result);
         } else {
@@ -49,14 +68,23 @@ function searchArtist(artist, callback) {
 }
 
 
-function searchSongLyrics(link, callback){
+function searchSongLyrics(link, type, callback){
   //Check whether the URL is fully defined or relative
-  var url = /^http/.test(link) ? link : RAP_GENIUS_URL + link;
+  type = type.toLowerCase();
+  var type2Urls = Constants.Type2URLs[ type];
+  if (!type2Urls){
+    process.nextTick(function(){
+      callback("Unrecognized type in song lyrics search [type=" + type + "]");
+    });
+    return;
+  }
+
+  var url = /^http/.test(link) ? link : type2Urls.base_url + link;
   superAgent.get(url)
     .set("Accept", "text/html")
     .end(function(res){
       if(res.ok){
-        var result = RapLyricsParser.parseLyricsHTML(res.text);
+        var result = RapLyricsParser.parseLyricsHTML(res.text, type);
         if(result instanceof  Error){
           return callback(result);
         }else{
@@ -69,9 +97,19 @@ function searchSongLyrics(link, callback){
     });
 }
 
-function searchLyricsExplanation(songId, callback){
+function searchLyricsExplanation(songId, type, callback){
   //Check whether the URL is fully defined or relative
-  superAgent.get(RAP_GENIUS_SONG_EXPLANATION_URL)
+
+  type = type.toLowerCase();
+  var type2Urls = Constants.Type2URLs[ type];
+  if (!type2Urls){
+    process.nextTick(function(){
+      callback("Unrecognized type in song lyrics search [type=" + type + "]");
+    });
+    return;
+  }
+
+  superAgent.get(type2Urls.annotations_url)
     .set("Accept", "text/html")
     .query({song_id: songId})
     .end(function(res){
@@ -89,14 +127,14 @@ function searchLyricsExplanation(songId, callback){
     });
 }
 
-function searchLyricsAndExplanations(link, callback){
+function searchLyricsAndExplanations(link, type, callback){
   var lyrics = null;
   var lyricsCallback = function(err, rapLyrics){
     if(err){
       return callback(err);
     }else{
       lyrics = rapLyrics;
-      searchLyricsExplanation(lyrics.songId, explanationsCallback);
+      searchLyricsExplanation(lyrics.songId, type, explanationsCallback);
     }
   };
 
@@ -108,7 +146,7 @@ function searchLyricsAndExplanations(link, callback){
     }
   };
 
-  searchSongLyrics(link, lyricsCallback);
+  searchSongLyrics(link, type, lyricsCallback);
 }
 
 module.exports.searchSong = searchSong;

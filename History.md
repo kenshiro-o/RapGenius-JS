@@ -1,3 +1,10 @@
+0.1.0 / 2014-02-02
+====================
+* Non backwards compatible changes introduced:
+- you can now search rock and rap artists, songs, and annotations by passing the type parameter
+* Also performed some refactoring
+
+
 0.0.7 / 2013-12-26
 ====================
 * Adding extra fields to RapLyrics model object:

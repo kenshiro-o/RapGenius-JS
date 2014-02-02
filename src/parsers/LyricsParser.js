@@ -1,8 +1,8 @@
 var cheerio = require("cheerio"),
-    RapLyrics = require("../model/RapLyrics"),
+    RapLyrics = require("../model/Lyrics"),
     StringUtils = require("../util/StringUtils");
 
-function parseLyricsHTML(html) {
+function parseLyricsHTML(html, type) {
     try {
         var $ = cheerio.load(html);
 
@@ -40,18 +40,19 @@ function parseLyricsHTML(html) {
         }
         var rapLyrics = null;
 
+      var currentSection = new Lyrics.Section("[Empty Section]");
+
         //We definitely have some lyrics down there...
         lyricsContainer.each(function (index, container) {
             //The lyrics class holds the paragraphs that contain the lyrics
             var lyricsElems = $(container).find(".lyrics");
             var songId = parseInt($(lyricsElems.first()).attr("data-id"));
-            rapLyrics = new RapLyrics.RapLyrics(songId, 10);
+            rapLyrics = new Lyrics.Lyrics(songId, 10);
             rapLyrics.songTitle = songTitle;
             rapLyrics.mainArtist = mainArtist;
             rapLyrics.featuringArtists = ftList;
             rapLyrics.producingArtists = prodList;
 
-            var currentSection = new RapLyrics.Section("[Empty Section]");
             var currentVerses = null;
 
             //Parsing function  - what really does the job
@@ -62,7 +63,7 @@ function parseLyricsHTML(html) {
 
                         //check if parsed content is a section
                         if (/^\[.*\]$/.test(parsed)) {
-                            currentSection = new RapLyrics.Section(parsed);
+                            currentSection = new Lyrics.Section(parsed);
                             rapLyrics.addSection(currentSection);
                         } else {
                             //Not a section name, therefore this must be text
@@ -71,7 +72,7 @@ function parseLyricsHTML(html) {
 
                             if (!currentVerses && parsedNotEmpty) {
                                 //Add verses to section
-                                currentVerses = new RapLyrics.Verses(-1);
+                                currentVerses = new Lyrics.Verses(-1);
                                 currentSection.addVerses(currentVerses);
                             }
                             //Now add content to verses object
@@ -86,7 +87,7 @@ function parseLyricsHTML(html) {
                     } else if (paragraphContent.type === "tag" && paragraphContent.name === "a") {
                         //We have stumbled upon an annotate lyrics block
                         var lyricsId = parseInt($(paragraphContent).attr("data-id"), 10);
-                        currentVerses = new RapLyrics.Verses(lyricsId);
+                        currentVerses = new Lyrics.Verses(lyricsId);
                         currentSection.addVerses(currentVerses);
 
                         //We now recursively process the text that is inside the <a> tag as it contains the lyrics
@@ -103,7 +104,10 @@ function parseLyricsHTML(html) {
             lyricsElems.find("p").each(parserFunc);
 
         });
-        return rapLyrics;
+      if (rapLyrics.sections.length === 0){
+        rapLyrics.addSection(currentSection);
+      }
+      return rapLyrics;
     } catch (e) {
         console.log("An error occurred while trying to parse the lyrics: [html=" + html + "], :\n" + e);
         return new Error("Unable to parse lyrics from RapGenius");
