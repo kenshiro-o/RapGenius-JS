@@ -1,7 +1,7 @@
 var cheerio = require("cheerio"),
   CONSTANTS = require("../constants/Constants"),
-  RapSong = require("../model/Song"),
-  RapArtist = require("../model/Artist"),
+  Song = require("../model/Song"),
+  Artist = require("../model/Artist"),
   StringUtils = require("../util/StringUtils");
 
 

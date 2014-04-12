@@ -1,5 +1,5 @@
 var cheerio = require("cheerio"),
-    RapLyrics = require("../model/Lyrics"),
+    Lyrics = require("../model/Lyrics"),
     StringUtils = require("../util/StringUtils");
 
 function parseLyricsHTML(html, type) {

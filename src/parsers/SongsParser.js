@@ -1,6 +1,6 @@
 var cheerio = require("cheerio"),
   CONSTANTS = require("../constants/Constants"),
-  RapSong = require("../model/Song"),
+  Song = require("../model/Song"),
   StringUtils = require("../util/StringUtils");
 
 
@@ -15,7 +15,11 @@ function parseSongHTML(html, type) {
     var rapSongArray = new Array(songs.length);
 
     songs.each(function (index, song) {
-      var link = urls.base_url + $(this).attr("href");
+      var link = $(this).attr("href");
+      // Adding the http prefix if the link does not contain it
+      if (!/^http/.test(link)){
+        link = urls.base_url + link;
+      }
       var elem = $(this).find(".title_with_artists");
 
       //Remove all unwanted characters
