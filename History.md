@@ -1,3 +1,8 @@
+0.1.1 / 2014-04-012
+====================
+* Added examples in folder
+* Fixed bugs
+
 0.1.0 / 2014-02-02
 ====================
 * Non backwards compatible changes introduced:

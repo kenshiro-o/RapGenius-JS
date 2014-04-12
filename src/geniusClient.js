@@ -53,7 +53,8 @@ function searchArtist(artist, type, callback) {
     superAgent.get(type2Urls.artist_url + artist)
     .set("Accept", "text/html")
     .end(function (res) {
-      if (res.ok) {
+        debugger;
+        if (res.ok) {
         var result = RapArtistParser.parseArtistHTML(res.text, type);
         if (result instanceof Error) {
           return callback(result);
