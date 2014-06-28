@@ -1,4 +1,8 @@
-0.1.1 / 2014-04-012
+0.1.2 / 2014-06-28
+====================
+* Fixed tests that were broken with new updated HTML code of RapGenius.
+
+0.1.1 / 2014-04-12
 ====================
 * Added examples in folder
 * Fixed bugs

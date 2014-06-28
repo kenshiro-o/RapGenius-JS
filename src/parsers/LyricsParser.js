@@ -7,18 +7,12 @@ function parseLyricsHTML(html, type) {
         var $ = cheerio.load(html);
 
         //Let's extract main and featured artists
-        var mainArtist = $(".song_header > .song_title > a", "#main").text().replace(/^\s+|\s+$/g, '');
-        var songTitle = $(".song_header > .song_title", "#main").text();
+        var mainArtist = $(".song_header .song_title_and_artists .text_artist > a", "#main").text().replace(/^\s+|\s+$/g, '')
+        var songTitle = $(".song_header .song_title_and_artists .text_title", "#main").text();
 
         //trimming song title string
         songTitle = songTitle.replace("\n", "");
         songTitle = songTitle.replace(/^\s+|\s+$/g, '');
-
-        //So we remove stuff like 'GZA -' in the string 'GZA - Liquid Sword Lyrics'
-        songTitle = songTitle.substring(mainArtist.length + " - ".length);
-
-        //Now we remove the Lyrics ' Lyrics' string (including whitespace at the end)
-        songTitle = songTitle.substring(0, songTitle.length - " Lyrics".length);
 
         var ftList = [];
         var featured = $(".role_artists > .featured_artists > a", "#main");
@@ -28,7 +22,7 @@ function parseLyricsHTML(html, type) {
         });
 
         var prodList = [];
-        var producers = $(".role_artists > .producer_artists > a", "#main");
+        var producers = $(".song_header .producer_artists > a", "#main");
         producers.each(function (index, producingArtist) {
             var prodArtist = $(producingArtist).text();
             prodList.push(prodArtist);
