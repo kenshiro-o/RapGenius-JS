@@ -5,12 +5,14 @@ information about rap and rock artists and songs.
 
 ## Rationale
 
-  This project was created because RapGenius do currently not support a node.js API.
+  This project was created because RapGenius does currently not support a Node.js API.
 
 ## Installation
 
-  $ npm install rapgenius-js
-
+```bash
+$ npm install rapgenius-js
+```
+  
 ## Usage
 
   The API is very simple to use and currently enables you to perform the following:
