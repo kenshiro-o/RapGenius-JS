@@ -7,8 +7,8 @@ function parseLyricsHTML(html, type) {
         var $ = cheerio.load(html);
 
         //Let's extract main and featured artists
-        var mainArtist = $(".song_header .song_title_and_artists .text_artist > a", "#main").text().replace(/^\s+|\s+$/g, '')
-        var songTitle = $(".song_header .song_title_and_artists .text_title", "#main").text();
+        var mainArtist = $(".song_header .title_and_authors .text_artist > a", "#main").text().replace(/^\s+|\s+$/g, '');
+        var songTitle = $(".song_header .title_and_authors .text_title", "#main").text();
 
         //trimming song title string
         songTitle = songTitle.replace("\n", "");
