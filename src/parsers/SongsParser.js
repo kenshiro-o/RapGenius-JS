@@ -22,12 +22,8 @@ function parseSongHTML(html, type) {
       }
       var elem = $(this).find(".title_with_artists");
 
-      //Remove all unwanted characters
-      var songAndArtists = StringUtils.removeWhiteSpacesAndNewLines(elem.text());
-      var indexOfHyphen = songAndArtists.indexOf("–");
-
-      var artists = StringUtils.trim(songAndArtists.substring(0, indexOfHyphen));
-      var songName = StringUtils.trim(songAndArtists.substring(indexOfHyphen + 1, songAndArtists.length));
+      var artists = elem.find(".artist_name").text();
+      var songName = elem.find(".song_title").text();
 
       rapSongArray[index] = new Song(songName, artists, link);
     });
