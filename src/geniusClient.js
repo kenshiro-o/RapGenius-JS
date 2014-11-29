@@ -4,8 +4,8 @@ var superAgent = require("superagent"),
   RapLyricsParser = require("./parsers/LyricsParser")
   Constants = require("./constants/Constants");
 
-var RAP_GENIUS_URL = "http://rapgenius.com";
-var RAP_GENIUS_ARTIST_URL = "http://rapgenius.com/artists/";
+var RAP_GENIUS_URL = "http://genius.com";
+var RAP_GENIUS_ARTIST_URL = "http://genius.com/artists/";
 var RAP_GENIUS_SONG_EXPLANATION_URL = RAP_GENIUS_URL + "/annotations/for_song_page";
 
 

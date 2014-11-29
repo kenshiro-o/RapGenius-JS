@@ -38,7 +38,7 @@ vows.describe("Search checks").addBatch({
       assert.ok(response.popularSongs.length > 0);
       assert.ok(response.songs.length > 0);
       assert.deepEqual(response.name, "GZA");
-      assert.deepEqual(response.link.toUpperCase(), "http://rapgenius.com/artists/Gza".toUpperCase());
+      assert.deepEqual(response.link.toUpperCase(), "http://genius.com/artists/Gza".toUpperCase());
     }
   },
   "when searching one artist's real name": {
@@ -53,7 +53,7 @@ vows.describe("Search checks").addBatch({
       assert.ok(response.popularSongs.length > 0);
       assert.ok(response.songs.length > 0);
       assert.deepEqual(response.name, "GZA");
-      assert.deepEqual(response.link.toUpperCase(), "http://rapgenius.com/artists/Gza".toUpperCase());
+      assert.deepEqual(response.link.toUpperCase(), "http://genius.com/artists/Gza".toUpperCase());
     }
   },
   "when searching an artist that does not exist": {
