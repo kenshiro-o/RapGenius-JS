@@ -34,7 +34,7 @@ function parseLyricsHTML(html, type) {
         }
         var rapLyrics = null;
 
-      var currentSection = new Lyrics.Section("[Empty Section]");
+        var currentSection = new Lyrics.Section("[Empty Section]");
 
         //We definitely have some lyrics down there...
         lyricsContainer.each(function (index, container) {
@@ -98,10 +98,10 @@ function parseLyricsHTML(html, type) {
             lyricsElems.find("p").each(parserFunc);
 
         });
-      if (rapLyrics.sections.length === 0){
-        rapLyrics.addSection(currentSection);
-      }
-      return rapLyrics;
+        if (rapLyrics.sections.length === 0){
+            rapLyrics.addSection(currentSection);
+        }
+        return rapLyrics;
     } catch (e) {
         console.log("An error occurred while trying to parse the lyrics: [html=" + html + "], :\n" + e);
         return new Error("Unable to parse lyrics from RapGenius");
