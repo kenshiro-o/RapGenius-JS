@@ -15,7 +15,7 @@ function parseLyricsHTML(html, type) {
         songTitle = songTitle.replace(/^\s+|\s+$/g, '');
 
         var ftList = [];
-        var featured = $(".role_artists > .featured_artists > a", "#main");
+        var featured = $(".song_header .featured_artists > a", "#main");
         featured.each(function (index, featuringArtist) {
             var ftArtistName = $(featuringArtist).text();
             ftList.push(ftArtistName);
