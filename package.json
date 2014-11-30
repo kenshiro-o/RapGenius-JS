@@ -19,5 +19,6 @@
   },
   "scripts" : {
     "test" :  "make test"
-  }
+  },
+  "engine": "node 0.10.33"
 }
