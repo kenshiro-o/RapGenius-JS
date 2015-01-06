@@ -7,16 +7,16 @@ function parseLyricsHTML(html, type) {
         var $ = cheerio.load(html);
 
         //Let's extract main and featured artists
-        var mainArtist = $(".song_header .song_title_and_artists .text_artist > a", "#main").text().replace(/^\s+|\s+$/g, '')
-        var songTitle = $(".song_header .song_title_and_artists .text_title", "#main").text();
+        var mainArtist = $(".text_artist", "#main").text().replace(/^\s+|\s+$/g, '');
+        var songTitle = $(".text_title", "#main").text();
 
         //trimming song title string
         songTitle = songTitle.replace("\n", "");
         songTitle = songTitle.replace(/^\s+|\s+$/g, '');
 
         var ftList = [];
-        var featured = $(".role_artists > .featured_artists > a", "#main");
-        featured.each(function (index, featuringArtist) {
+        var featured = $(".featured_artists", "#main");
+        featured.find('a').each(function (index, featuringArtist) {
             var ftArtistName = $(featuringArtist).text();
             ftList.push(ftArtistName);
         });
