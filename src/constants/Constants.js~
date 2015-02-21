@@ -10,13 +10,8 @@ var Type2URLs = {
         "base_url":"http://rapgenius.com",
         "search_url":"http://rapgenius.com/search",
         "annotations_url": "http://rapgenius.com/annotations/for_song_page"
-    },
-    "r-b": {
-	"artist_url":"http://r-b.genius.com/artists/",
-	"base_url": "http://r-b.genius.com",
-	"search_url": "http://r-b.genius.com/search",
-	"annotations_url": "http://r-b.genius.com/annotations/for_song_page"
     }
+
 };
 
 module.exports.Type2URLs = Type2URLs;
