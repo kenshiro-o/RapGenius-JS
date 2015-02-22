@@ -134,7 +134,7 @@ function searchLyricsAndExplanations(link, callback){
     if(err){
       return callback(err);
     }else{
-      //lyrics = rapLyrics;
+      lyrics = cur_lyrics;
       console.log("SongID: " + lyrics.songId)
       searchLyricsExplanation(lyrics.songId, explanationsCallback);
     }
