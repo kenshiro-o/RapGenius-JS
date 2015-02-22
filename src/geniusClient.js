@@ -130,7 +130,7 @@ function searchLyricsExplanation(songId, callback){
 
 function searchLyricsAndExplanations(link, callback){
   var lyrics = null;
-  var lyricsCallback = function(err, lyrics){
+  var lyricsCallback = function(err, cur_lyrics){
     if(err){
       return callback(err);
     }else{
