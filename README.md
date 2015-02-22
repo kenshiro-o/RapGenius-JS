@@ -1,7 +1,7 @@
 # Genius-JS [![Build Status](https://travis-ci.org/kenshiro-o/RapGenius-JS.png?branch=master)](https://travis-ci.org/kenshiro-o/RapGenius-JS)
 
   Genius-js is a simple client that enables you to query Genius(www.genius.com) and retrieve
-information about rap and rock artists and songs.
+information about rap and rock artists and songs. This project has been forked from kenshiro-o's RapGenius-JS and altered to support all areas of Genius rather than just Rap and Rock genius.
 
 ## Rationale
 
