@@ -1,5 +1,5 @@
 {
-  "name": "rapgenius-js",
+  "name": "genius-js",
   "description": "A client that queries the RapGenius (www.rapgenius.com) website",
   "rapgenius-js": "https://github.com/yuichitlo/RapGenius-JS/tarball/master",
   "keywords": ["rap", "rock", "rapgenius", "client", "lyrics", "music"],
