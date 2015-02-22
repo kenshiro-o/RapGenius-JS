@@ -12,12 +12,12 @@ Artist.prototype = {
   songs: null
 };
 
-Artist.prototype.addPopularSong = function (rapSong) {
-  this.popularSongs.push(rapSong);
+Artist.prototype.addPopularSong = function (song) {
+  this.popularSongs.push(song);
 };
 
-Artist.prototype.addSong = function (rapSong) {
-  this.songs.push(rapSong);
+Artist.prototype.addSong = function (song) {
+  this.songs.push(song);
 };
 
 

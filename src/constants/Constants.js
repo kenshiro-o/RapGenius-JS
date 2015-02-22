@@ -1,4 +1,10 @@
 var Type2URLs = {
+    "urls": {
+        "artist_url":"http://genius.com/artists/",
+        "base_url":"http://genius.com",
+        "search_url":"http://genius.com/search",
+        "annotations_url": "http://genius.com/annotations/for_song_page"
+    };
     "rock": {
         "artist_url":"http://rock.rapgenius.com/artists/",
         "base_url":"http://rock.rapgenius.com",

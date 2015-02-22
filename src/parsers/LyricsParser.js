@@ -2,7 +2,7 @@ var cheerio = require("cheerio"),
     Lyrics = require("../model/Lyrics"),
     StringUtils = require("../util/StringUtils");
 
-function parseLyricsHTML(html, type) {
+function parseLyricsHTML(html) {
     try {
         var $ = cheerio.load(html);
 
@@ -32,7 +32,7 @@ function parseLyricsHTML(html, type) {
         if (lyricsContainer.length <= 0) {
             return new Error("Unable to parse lyrics: lyrics_container does not exist!");
         }
-        var rapLyrics = null;
+        var cur_lyrics = null;
 
       var currentSection = new Lyrics.Section("[Empty Section]");
 
@@ -41,11 +41,11 @@ function parseLyricsHTML(html, type) {
             //The lyrics class holds the paragraphs that contain the lyrics
             var lyricsElems = $(container).find(".lyrics");
             var songId = parseInt($(lyricsElems.first()).attr("data-id"));
-            rapLyrics = new Lyrics.Lyrics(songId, 10);
-            rapLyrics.songTitle = songTitle;
-            rapLyrics.mainArtist = mainArtist;
-            rapLyrics.featuringArtists = ftList;
-            rapLyrics.producingArtists = prodList;
+            cur_lyrics = new Lyrics.Lyrics(songId, 10);
+            cur_lyrics.songTitle = songTitle;
+            cur_lyrics.mainArtist = mainArtist;
+            cur_lyrics.featuringArtists = ftList;
+            cur_lyrics.producingArtists = prodList;
 
             var currentVerses = null;
 
@@ -58,7 +58,7 @@ function parseLyricsHTML(html, type) {
                         //check if parsed content is a section
                         if (/^\[.*\]$/.test(parsed)) {
                             currentSection = new Lyrics.Section(parsed);
-                            rapLyrics.addSection(currentSection);
+                            cur_lyrics.addSection(currentSection);
                         } else {
                             //Not a section name, therefore this must be text
                             //However we only want to add non empty strings
@@ -98,10 +98,10 @@ function parseLyricsHTML(html, type) {
             lyricsElems.find("p").each(parserFunc);
 
         });
-      if (rapLyrics.sections.length === 0){
-        rapLyrics.addSection(currentSection);
+      if (cur_lyrics.sections.length === 0){
+        cur_lyrics.addSection(currentSection);
       }
-      return rapLyrics;
+      return cur_lyrics;
     } catch (e) {
         console.log("An error occurred while trying to parse the lyrics: [html=" + html + "], :\n" + e);
         return new Error("Unable to parse lyrics from RapGenius");

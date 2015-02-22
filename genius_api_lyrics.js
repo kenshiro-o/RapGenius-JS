@@ -1,4 +1,4 @@
-var rapgeniusClient = require("rapgenius-js");
+var geniusClient = require("genius-js");
 
 var lyricsSearchCb = function(err, lyricsAndExplanations){
     if(err){
@@ -25,9 +25,10 @@ var searchCallback = function(err, songs){
   }else{
     if(songs.length > 0){
       //We have some songs
-      rapgeniusClient.searchLyricsAndExplanations(songs[0].link, "r&b", lyricsSearchCb);
+      console.log("SONG ID: " + songs[0].songId)
+      geniusClient.searchLyricsAndExplanations(songs[0].link, "r-b", lyricsSearchCb);
     }
   }
 };
-
-rapgeniusClient.searchSong("Drunk in Love", "r-b", searchCallback);
+geniusClient.searchSong("Beat It", "r-b", searchCallback);
+geniusClient.searchSong("Beat It", "rock", searchCallback);

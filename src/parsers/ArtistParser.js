@@ -5,9 +5,9 @@ var cheerio = require("cheerio"),
   StringUtils = require("../util/StringUtils");
 
 
-function parseArtistHTML(html, type) {
+function parseArtistHTML(html) {
   try {
-    var urls = CONSTANTS.Type2URLs[type];
+    var urls = CONSTANTS.Type2URLs["urls"];
     var $ = cheerio.load(html);
 
     var artistElem = $(".canonical_name", "#main");
@@ -28,7 +28,7 @@ function parseArtistHTML(html, type) {
     });
 
     var artistLink = urls.artist_url + artistName.replace(" ", "-");
-    var rapArtist = new Artist(artistName, artistLink);
+    var cur_artist = new Artist(artistName, artistLink);
 
     var songs = $(".song_list", "#main");
     songs.each(function (index, song) {
@@ -40,18 +40,18 @@ function parseArtistHTML(html, type) {
 
         if (index === 0) {
           //This element represents the favourite songs of the artist
-          rapArtist.addPopularSong(rapSong);
+          cur_artist.addPopularSong(rapSong);
         }
-        rapArtist.addSong(rapSong);
+        cur_artist.addSong(rapSong);
       });
 
     });
 
-    return rapArtist;
+    return cur_artist;
 
   } catch (e) {
     console.log("An error occured while trying to parse the artist: [html=" + html + "], error: " + e);
-    return new Error("Unable to parse artist details results from RapGenius");
+    return new Error("Unable to parse artist details results from Genius");
   }
 }
 
