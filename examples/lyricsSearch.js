@@ -1,4 +1,4 @@
-var rapgeniusClient = require("../src/geniusClient");
+var geniusClient = require("../src/geniusClient");
 
 var lyricsSearchCb = function(err, lyricsAndExplanations){
   if(err){
@@ -24,9 +24,9 @@ var searchCallback = function(err, songs){
   }else{
     if(songs.length > 0){
       //We have some songs
-      rapgeniusClient.searchLyricsAndExplanations(songs[0].link, "rap", lyricsSearchCb);
+      geniusClient.searchLyricsAndExplanations(songs[0].link, lyricsSearchCb);
     }
   }
 };
 
-rapgeniusClient.searchSong("Liquid Swords", "rap", searchCallback);
+geniusClient.searchSong("Liquid Swords", "GZA", searchCallback);
