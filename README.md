@@ -1,16 +1,16 @@
-# RapGenius-JS [![Build Status](https://travis-ci.org/kenshiro-o/RapGenius-JS.png?branch=master)](https://travis-ci.org/kenshiro-o/RapGenius-JS)
+# Genius-JS [![Build Status](https://travis-ci.org/kenshiro-o/RapGenius-JS.png?branch=master)](https://travis-ci.org/kenshiro-o/RapGenius-JS)
 
-  rapgenius-js is a simple client that enables you to query RapGenius(www.rapgenius.com) and retrieve
+  Genius-js is a simple client that enables you to query Genius(www.genius.com) and retrieve
 information about rap and rock artists and songs.
 
 ## Rationale
 
-  This project was created because RapGenius does currently not support a Node.js API.
+  This project was created because Genius does currently not support a Node.js API.
 
 ## Installation
 
 ```bash
-$ npm install rapgenius-js
+$ npm install genius-js
 ```
   
 ## Usage
@@ -54,36 +54,26 @@ $ npm install rapgenius-js
 ### Search for an artist:
 
 ```js
-var rapgeniusClient = require("rapgenius-js");
+var geniusClient = require("genius-js");
 
-rapgeniusClient.searchArtist("GZA", "rap", function(err, artist){
+rapgeniusClient.searchArtist("GZA", function(err, artist){
   if(err){
     console.log("Error: " + err);
   }else{
-    console.log("Rap artist found [name=%s, link=%s, popular-songs=%d]",
+    console.log("Artist found [name=%s, link=%s, popular-songs=%d]",
                 artist.name, artist.link, artist.popularSongs.length);
 
   }
 });
 
-//Example for a rock artist
-rapgeniusClient.searchArtist("Bruce Springsteen", "rock", function(err, artist){
-  if(err){
-    console.log("Error: " + err);
-  }else{
-    console.log("Rap artist found [name=%s, link=%s, popular-songs=%d]",
-                artist.name, artist.link, artist.popularSongs.length);
-
-  }
-});
 ```
 
 ### Search for a song:
 
 ```js
-var rapgeniusClient = require("rapgenius-js");
+var geniusClient = require("genius-js");
 
-rapgeniusClient.searchSong("Liquid Swords", "rap", function(err, songs){
+geniusClient.searchSong("Liquid Swords", "GZA", function(err, songs){
   if(err){
     console.log("Error: " + err);
   }else{
@@ -96,7 +86,7 @@ rapgeniusClient.searchSong("Liquid Swords", "rap", function(err, songs){
 ### Search for the lyrics of a song along with their meaning:
 
 ```js
-var rapgeniusClient = require("rapgenius-js");
+var geniusClient = require("genius-js");
 
 var lyricsSearchCb = function(err, lyricsAndExplanations){
     if(err){
@@ -122,12 +112,12 @@ var searchCallback = function(err, songs){
   }else{
     if(songs.length > 0){
       //We have some songs
-      rapgeniusClient.searchLyricsAndExplanations(songs[0].link, "rap", lyricsSearchCb);
+      geniusClient.searchLyricsAndExplanations(songs[0].link, lyricsSearchCb);
     }
   }
 };
 
-rapgeniusClient.searchSong("Liquid Swords", "rap", searchCallback);
+geniusClient.searchSong("Liquid Swords", "GZA", searchCallback);
 ```
 
 
