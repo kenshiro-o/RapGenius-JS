@@ -1,32 +1,32 @@
 var superAgent = require("superagent"),
-  RapSongParser = require("./parsers/SongsParser"),
-  RapArtistParser = require("./parsers/ArtistParser"),
-  RapLyricsParser = require("./parsers/LyricsParser")
+  SongParser = require("./parsers/SongsParser"),
+  ArtistParser = require("./parsers/ArtistParser"),
+  LyricsParser = require("./parsers/LyricsParser")
   Constants = require("./constants/Constants");
 
-var RAP_GENIUS_URL = "http://rapgenius.com";
-var RAP_GENIUS_ARTIST_URL = "http://rapgenius.com/artists/";
-var RAP_GENIUS_SONG_EXPLANATION_URL = RAP_GENIUS_URL + "/annotations/for_song_page";
+var GENIUS_URL = "http://genius.com";
+var GENIUS_ARTIST_URL = "http://genius.com/artists/";
+var GENIUS_SONG_EXPLANATION_URL = GENIUS_URL + "/annotations/for_song_page";
 
 
-function searchSong(query, type, callback) {
+function searchSong(query, artist, callback) {
   //TODO perform input validation
 
-  type = type.toLowerCase();
-  var type2Urls = Constants.Type2URLs[ type];
-  if (!type2Urls){
-      process.nextTick(function(){
-         callback("Unrecognized type in song search [type=" + type + "]");
-      });
-      return;
-  }
+  // type = type.toLowerCase();
+  // var type2Urls = Constants.Type2URLs[ type];
+  // if (!type2Urls){
+  //     process.nextTick(function(){
+  //        callback("Unrecognized type in song search [type=" + type + "]");
+  //     });
+  //     return;
+  // }
 
-  superAgent.get(type2Urls.search_url)
-    .query({q: query})
+  superAgent.get("http://genius.com/search")
+    .query({q: query + artist})
     .set("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8")
     .end(function (res) {
       if (res.ok) {
-        var result = RapSongParser.parseSongHTML(res.text, type);
+        var result = SongParser.parseSongHTML(res.text);
         if (result instanceof Error) {
           return callback(result);
         } else {
@@ -39,23 +39,23 @@ function searchSong(query, type, callback) {
     });
 }
 
-function searchArtist(artist, type, callback) {
+function searchArtist(artist, callback) {
   //TODO perform input validation
-    type = type.toLowerCase();
-    var type2Urls = Constants.Type2URLs[ type];
-    if (!type2Urls){
-        process.nextTick(function(){
-            callback("Unrecognized type in artist search [type=" + type + "]");
-        });
-        return;
-    }
+    // type = type.toLowerCase();
+    // var type2Urls = Constants.Type2URLs[ type];
+    // if (!type2Urls){
+    //     process.nextTick(function(){
+    //         callback("Unrecognized type in artist search [type=" + type + "]");
+    //     });
+    //     return;
+    // }
 
-    superAgent.get(type2Urls.artist_url + artist)
+    superAgent.get("http://genius.com/artists/" + artist)
     .set("Accept", "text/html")
     .end(function (res) {
         debugger;
         if (res.ok) {
-        var result = RapArtistParser.parseArtistHTML(res.text, type);
+        var result = ArtistParser.parseArtistHTML(res.text);
         if (result instanceof Error) {
           return callback(result);
         } else {
@@ -69,23 +69,23 @@ function searchArtist(artist, type, callback) {
 }
 
 
-function searchSongLyrics(link, type, callback){
+function searchSongLyrics(link, callback){
   //Check whether the URL is fully defined or relative
-  type = type.toLowerCase();
-  var type2Urls = Constants.Type2URLs[ type];
-  if (!type2Urls){
-    process.nextTick(function(){
-      callback("Unrecognized type in song lyrics search [type=" + type + "]");
-    });
-    return;
-  }
+  // type = type.toLowerCase();
+  // var type2Urls = Constants.Type2URLs[ type];
+  // if (!type2Urls){
+  //   process.nextTick(function(){
+  //     callback("Unrecognized type in song lyrics search [type=" + type + "]");
+  //   });
+  //   return;
+  // }
 
-  var url = /^http/.test(link) ? link : type2Urls.base_url + link;
+  var url = /^http/.test(link) ? link : "http://genius.com" + link;
   superAgent.get(url)
     .set("Accept", "text/html")
     .end(function(res){
       if(res.ok){
-        var result = RapLyricsParser.parseLyricsHTML(res.text, type);
+        var result = LyricsParser.parseLyricsHTML(res.text);
         if(result instanceof  Error){
           return callback(result);
         }else{
@@ -98,24 +98,24 @@ function searchSongLyrics(link, type, callback){
     });
 }
 
-function searchLyricsExplanation(songId, type, callback){
+function searchLyricsExplanation(songId, callback){
   //Check whether the URL is fully defined or relative
 
-  type = type.toLowerCase();
-  var type2Urls = Constants.Type2URLs[ type];
-  if (!type2Urls){
-    process.nextTick(function(){
-      callback("Unrecognized type in song lyrics search [type=" + type + "]");
-    });
-    return;
-  }
+  // type = type.toLowerCase();
+  // var type2Urls = Constants.Type2URLs[ type];
+  // if (!type2Urls){
+  //   process.nextTick(function(){
+  //     callback("Unrecognized type in song lyrics search [type=" + type + "]");
+  //   });
+  //   return;
+  // }
 
-  superAgent.get(type2Urls.annotations_url)
+  superAgent.get("http://genius.com/annotations/for_song_page")
     .set("Accept", "text/html")
     .query({song_id: songId})
     .end(function(res){
       if(res.ok){
-        var explanations = RapLyricsParser.parseLyricsExplanationJSON(JSON.parse(res.text));
+        var explanations = LyricsParser.parseLyricsExplanationJSON(JSON.parse(res.text));
         if(explanations instanceof Error){
           return callback(explanations);
         }else{
@@ -128,14 +128,15 @@ function searchLyricsExplanation(songId, type, callback){
     });
 }
 
-function searchLyricsAndExplanations(link, type, callback){
+function searchLyricsAndExplanations(link, callback){
   var lyrics = null;
-  var lyricsCallback = function(err, rapLyrics){
+  var lyricsCallback = function(err, cur_lyrics){
     if(err){
       return callback(err);
     }else{
-      lyrics = rapLyrics;
-      searchLyricsExplanation(lyrics.songId, type, explanationsCallback);
+      lyrics = cur_lyrics;
+      console.log("SongID: " + lyrics.songId)
+      searchLyricsExplanation(lyrics.songId, explanationsCallback);
     }
   };
 
@@ -147,7 +148,7 @@ function searchLyricsAndExplanations(link, type, callback){
     }
   };
 
-  searchSongLyrics(link, type, lyricsCallback);
+  searchSongLyrics(link, lyricsCallback);
 }
 
 module.exports.searchSong = searchSong;

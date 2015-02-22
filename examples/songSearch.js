@@ -1,6 +1,6 @@
-var rapgeniusClient = require("../src/geniusClient");
+var geniusClient = require("../src/geniusClient");
 
-rapgeniusClient.searchSong("Liquid Swords", "rap", function(err, songs){
+geniusClient.searchSong("Liquid Swords", "GZA", function(err, songs){
   if(err){
     console.log("Error: " + err);
   }else{
