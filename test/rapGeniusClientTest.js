@@ -37,8 +37,8 @@ vows.describe("Search checks").addBatch({
       assert.ok(response instanceof Artist);
       assert.ok(response.popularSongs.length > 0);
       assert.ok(response.songs.length > 0);
-      assert.deepEqual(response.name, "GZA");
-      assert.deepEqual(response.link.toUpperCase(), "http://rapgenius.com/artists/Gza".toUpperCase());
+      assert.deepEqual(response.name, "Genius");
+      assert.deepEqual(response.link.toUpperCase(), "http://genius.com/artists/Genius".toUpperCase());
     }
   },
   "when searching one artist's real name": {
@@ -53,7 +53,7 @@ vows.describe("Search checks").addBatch({
       assert.ok(response.popularSongs.length > 0);
       assert.ok(response.songs.length > 0);
       assert.deepEqual(response.name, "GZA");
-      assert.deepEqual(response.link.toUpperCase(), "http://rapgenius.com/artists/Gza".toUpperCase());
+      assert.deepEqual(response.link.toUpperCase(), "http://genius.com/artists/Gza".toUpperCase());
     }
   },
   "when searching an artist that does not exist": {
@@ -67,20 +67,19 @@ vows.describe("Search checks").addBatch({
   },
   "When searching for the lyrics of given song":{
     topic: function(){
-      geniusClient.searchSongLyrics("/Raekwon-knowledge-god-lyrics", "rap", this.callback);
+      geniusClient.searchSongLyrics("/Kanye-west-gorgeous-lyrics", "rap", this.callback);
     },
 
-    "The parsed lyrics are returned in an object": function(err, response){
-      assert.ok(!err);
+    "The parsed lyrics are returned in an object": function(err, response){      assert.ok(!err);
       assert.ok(!(response instanceof Error));
       assert.ok(response instanceof Lyrics.Lyrics);
-      assert.deepEqual(response.songId, 3681);
-      assert.deepEqual(response.songTitle, "Knowledge God");
-      assert.deepEqual(response.mainArtist, "Raekwon");
-      assert.deepEqual(response.producingArtists, ["RZA"]);
-      assert.deepEqual(response.featuringArtists, []);
+      assert.deepEqual(response.songId, 1791);
+      assert.deepEqual(response.songTitle, "Gorgeous");
+      assert.deepEqual(response.mainArtist, "Kanye West");
+      assert.deepEqual(response.producingArtists, ["Kanye West", "Mike Dean", "No I.D."]);
+      assert.deepEqual(response.featuringArtists, ["Kid Cudi", "Raekwon"]);
       assert.ok(response.sections.length > 0);
-      assert.deepEqual(response.sections[0].name, "[Intro]");
+      assert.deepEqual(response.sections[0].name, "[Produced by Kanye West, Mike Dean &amp; No I.D.]");
     }
   },
 

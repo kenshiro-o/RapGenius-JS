@@ -34,7 +34,7 @@ function parseArtistHTML(html, type) {
     songs.each(function (index, song) {
       var songLinkElem = $(song).find(".song_link");
       songLinkElem.each(function (i, s) {
-        var songLink = urls.base_url + $(s).attr("href");
+        var songLink = $(s).attr("href");
         var songName = StringUtils.removeWhiteSpacesAndNewLines($(s).children(".title_with_artists").text());
         var rapSong = new Song(songName, artistLink, songLink);
 
