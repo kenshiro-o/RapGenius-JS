@@ -34,7 +34,7 @@ vows.describe("Search checks").addBatch({
             assert.ok(response.popularSongs.length > 0);
             assert.ok(response.songs.length > 0);
             assert.deepEqual(response.name, "Bruce Springsteen");
-            assert.deepEqual(response.link.toUpperCase(), "http://rock.rapgenius.com/artists/Bruce-Springsteen".toUpperCase());
+            assert.deepEqual(response.link.toUpperCase(), "http://genius.com/artists/Bruce-Springsteen".toUpperCase());
         }
     },
 
