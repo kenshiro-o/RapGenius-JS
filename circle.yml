@@ -1,0 +1,4 @@
+machine:
+  timezone: Europe/London
+  node:
+    version: 6.1.0
